@@ -1,0 +1,22 @@
+#  Local .terraform directories
+**/f5-bigip/.terraform
+**/f5-bigip/terraform.tfstate
+**/f5-bigip/terraform.tfstate.backup
+**/f5-bigip/.terraform.lock.hcl
+**/terraform-aws-bigip-module
+
+**/f5-bigip/*.pem
+
+# .tfvars files
+*.tfvars
+openshift_pull_secret.json
+.terraform.lock.hcl
+
+# OS X files
+.DS_Store
+
+# VSCode files
+.vscode
+
+# File where I store potential login and password
+login.txt
