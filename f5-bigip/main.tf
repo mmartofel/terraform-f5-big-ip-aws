@@ -80,6 +80,20 @@ resource "aws_security_group" "f5-bigip-sg" {
     cidr_blocks = ["0.0.0.0/0"]                     # Allow admin console HTTPS access from anywhere (not recommended for production)
   }
 
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]                     # Allow virtual server HTTPS access from anywhere (not recommended for production)
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]                     # Allow application host to connect via HTTP from anywhere (not recommended for production)
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -117,7 +131,7 @@ resource "local_file" "private_key_file" {
   filename = "f5-bigip-key.pem"
 }
 
-# Create an EC2 instance in the public subnet
+# Create F5 BIGIP EC2 instance in the public subnet
 resource "aws_instance" "f5-bigip-host" {
   # Be aware that AMI id is region speciffic, please change if you install at the other region
   ami                          = "ami-08583ffbb1c2fde51"                # F5 BIGIP-17.5.1.2-0.0.5 PAYG-Good 25Mbps-250916013626 (us-east-2)
@@ -133,10 +147,37 @@ resource "aws_instance" "f5-bigip-host" {
   }
 }
 
-output "ssh_command" {
+# Create an EC2 instance to simulate an application at the same VPC
+resource "aws_instance" "app-host" {
+  # ami                          = "ami-00d7be712d19c601f"                # al2023-ami-2023.6.20250123.4-kernel-6.1-x86_64 (eu-central-1 region)
+  ami                          = "ami-0d0f28110d16ee7d6"                # al2023-ami-2023.6.20250303.0-kernel-6.1-x86_64 (us-east-2 region)
+  instance_type                = "t2.micro"                             # Free tier eligible
+  subnet_id                    = aws_subnet.f5-bigip-subnet.id           # Attach to subnet
+  vpc_security_group_ids       = [aws_security_group.f5-bigip-sg.id]     # Assign security group
+  associate_public_ip_address  = true                                   # Attach a public IP
+  key_name                     = aws_key_pair.f5-bigip-key-pair.key_name # Attach the new key pair
+  user_data                    = file("setup.sh")               # Path to your install script
+  
+  tags = {
+    Name = "app-host"
+    created-for = "APP-HOST"
+  }
+}
+
+output "f5_ssh_command" {
   value = "ssh -i f5-bigip-key.pem admin@${aws_instance.f5-bigip-host.public_ip}"
 }
 
-output "web_url" {
+output "f5_admin_web_url" {
   value = "https://${aws_instance.f5-bigip-host.public_ip}:8443"
 }
+
+output "app_host_ssh_command" {
+  value = "ssh -i f5-bigip-key.pem ec2-user@${aws_instance.app-host.public_ip}"
+}
+
+output "app_host_admin_web_url" {
+  value = "http://${aws_instance.app-host.public_ip}"
+}
+
+

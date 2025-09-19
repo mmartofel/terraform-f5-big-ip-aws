@@ -118,7 +118,7 @@ resource "local_file" "private_key_file" {
 }
 
 # Create an EC2 instance in the public subnet
-resource "aws_instance" "app-host-host" {
+resource "aws_instance" "app-host" {
   # ami                          = "ami-00d7be712d19c601f"                # al2023-ami-2023.6.20250123.4-kernel-6.1-x86_64 (eu-central-1 region)
   ami                          = "ami-0d0f28110d16ee7d6"                # al2023-ami-2023.6.20250303.0-kernel-6.1-x86_64 (us-east-2 region)
   instance_type                = "t2.micro"                             # Free tier eligible
@@ -129,16 +129,16 @@ resource "aws_instance" "app-host-host" {
   user_data                    = file("setup.sh")               # Path to your install script
   
   tags = {
-    Name = "app-host-host"
+    Name = "app-host"
     created-for = "APP-HOST"
   }
 }
 
 output "ssh_command" {
-  value = "ssh -i app-host-key.pem ec2-user@${aws_instance.app-host-host.public_ip}"
+  value = "ssh -i app-host-key.pem ec2-user@${aws_instance.app-host.public_ip}"
 }
 
 output "web_url" {
-  value = "http://${aws_instance.app-host-host.public_ip}"
+  value = "http://${aws_instance.app-host.public_ip}"
 }
 
