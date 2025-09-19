@@ -137,3 +137,8 @@ resource "aws_instance" "app-host-host" {
 output "ssh_command" {
   value = "ssh -i app-host-key.pem ec2-user@${aws_instance.app-host-host.public_ip}"
 }
+
+output "web_url" {
+  value = "http://${aws_instance.app-host-host.public_ip}"
+}
+
