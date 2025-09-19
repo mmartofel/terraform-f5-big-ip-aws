@@ -1,17 +1,13 @@
-#  Local .terraform directories
-**/f5-bigip/.terraform
-**/f5-bigip/terraform.tfstate
-**/f5-bigip/terraform.tfstate.backup
-**/f5-bigip/.terraform.lock.hcl
+#  Local directories
 **/terraform-aws-bigip-module
 
-# Local key files
-**/f5-bigip/*.pem
-
-# .tfvars files
+# Terraform files
 *.tfvars
-openshift_pull_secret.json
 .terraform.lock.hcl
+.terraform
+terraform.tfstate
+terraform.tfstate.backup
+*.pem
 
 # OS X files
 .DS_Store
