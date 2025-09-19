@@ -5,6 +5,7 @@
 **/f5-bigip/.terraform.lock.hcl
 **/terraform-aws-bigip-module
 
+# Local key files
 **/f5-bigip/*.pem
 
 # .tfvars files
