@@ -63,35 +63,35 @@ resource "aws_route_table_association" "f5-bigip-rta" {
 # Create a Security Group that allows SSH and HTTPS access
 resource "aws_security_group" "f5-bigip-sg" {
   name        = "f5-bigip-security-group"
-  description = "Allow SSH inbound traffic for f5-bigip host"
+  description = "F5 BIG-IP Virtual Edition - GOOD (PAYG, 25Mbps)-17.5.1.2-0.0.5"
   vpc_id      = aws_vpc.f5-bigip-vpc.id
   
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]                     # Allow SSH from anywhere (not recommended for production)
+    cidr_blocks = ["0.0.0.0/1"]                     # Allow SSH from anywhere (not recommended for production)
   }
   
   ingress {
     from_port   = 8443
     to_port     = 8443
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]                     # Allow admin console HTTPS access from anywhere (not recommended for production)
+    cidr_blocks = ["0.0.0.0/1"]                     # Allow admin console HTTPS access from anywhere (not recommended for production)
   }
 
   ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]                     # Allow virtual server HTTPS access from anywhere (not recommended for production)
+    cidr_blocks = ["0.0.0.0/1"]                     # Allow virtual server HTTPS access from anywhere (not recommended for production)
   }
 
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]                     # Allow application host to connect via HTTP from anywhere (not recommended for production)
+    cidr_blocks = ["0.0.0.0/1"]                     # Allow application host to connect via HTTP from anywhere (not recommended for production)
   }
 
   egress {

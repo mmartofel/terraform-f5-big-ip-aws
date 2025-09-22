@@ -12,5 +12,3 @@ git --version >> /var/log/install-tools.log 2>&1
 sudo yum install -y httpd >> /var/log/install-tools.log 2>&1
 sudo systemctl enable httpd >> /var/log/install-tools.log 2>&1
 sudo systemctl start httpd >> /var/log/install-tools.log 2>&1
-sudo systemctl disable firewalld >> /var/log/install-tools.log 2>&1
-sudo systemctl stop firewalld >> /var/log/install-tools.log 2>&1
