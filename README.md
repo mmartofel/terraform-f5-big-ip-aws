@@ -57,9 +57,13 @@ ssh login command will be at the end of terraform output, for example:
 tmsh 
 
 modify auth password admin
+
 modify sys httpd ssl-port 8443
+
 list sys httpd ssl-port
+
 create auth partition test
+
 save sys config
 
 
